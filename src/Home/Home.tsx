@@ -122,7 +122,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           setBotId(errorBotId);
           break;
       }
-      scrollToBottom();
+
       reset();
       const botResponse = await axios.post(
         `${process.env.REACT_APP_BACK_URL}/user/addMessage`,
@@ -136,6 +136,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         }
       );
       setUser(botResponse.data);
+      scrollToBottom();
     } catch (error) {
       console.error('error:', error)
     } finally {
