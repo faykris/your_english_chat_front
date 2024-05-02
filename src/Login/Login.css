@@ -1,0 +1,108 @@
+.Login {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 50rem;
+    justify-content: center;
+    align-items: baseline;
+    background-color: #88b5bb;
+    font-family: Verdana, sans-serif;
+    background-size: cover;
+    background-repeat: repeat;
+    background-image: url("https://cdn1.vectorstock.com/i/1000x1000/23/60/currency-background-vector-5262360.jpg");
+}
+
+.Login > h1, .Login > h3 {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    text-shadow: 1px 1px 2px black,
+    0 0 1em #114422,
+    0 0 0.2em #34d241;
+}
+
+.Login > h1 {
+    margin-top: 5vw;
+}
+
+.login-card {
+    width: 30vw;
+    background-color: #18a6a4;
+    border-radius: 10px;
+    box-shadow: 1px 1px 8px 5px rgba(0, 0, 0, 0.3);
+}
+
+.login-title {
+    background-color: #114422;
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+}
+
+.login-body {
+    padding: .5rem;
+}
+
+.login-body form {
+    width: 100%;
+}
+
+.login-body form input {
+    width: 100%;
+    padding: .7rem .5rem;
+    border: none;
+    border-radius: 20px;
+    margin-top: .2rem;
+}
+
+.login-body form span {
+    font-size: 10px;
+    color: red;
+    width: 100%;
+}
+
+.login-submit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-submit p {
+    font-size: 12px;
+}
+
+.login-submit p a {
+    color: blue;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1080px) {
+    .Login {
+        padding: 6vw;
+        height: 60rem;
+    }
+
+    .Login > h5 {
+        margin-bottom: 3rem;
+    }
+
+    .login-card {
+        width: 55vw;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .Login {
+        padding: 2vw;
+    }
+
+    .Login > h5 {
+        margin-bottom: 5rem;
+    }
+
+    .login-card {
+        width: 100%;
+    }
+}

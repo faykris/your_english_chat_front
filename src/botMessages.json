@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "valid": true,
+    "message": "Hi. Welcome to Currency Chat! \nPlease write only the currency that you want to use to convert to another\n - USD\n - GBP\n - EUR\n - AUD\n - COP\n"
+  },
+  {
+    "id": 2,
+    "valid": true,
+    "message": "Now write the currency that will be converted"
+  },
+  {
+    "id": 3,
+    "valid": true,
+    "message": "Finally write the amount that you want to calculate (only numbers)"
+  },
+  {
+    "id": 4,
+    "valid": true,
+    "message": "The result is:\n"
+  },
+  {
+    "id": 5,
+    "valid": false,
+    "message": "Invalid option. Please write only a valid currency: (eg. GBP)"
+  },
+  {
+    "id": 6,
+    "valid": false,
+    "message": "Invalid amount. Please write only a valid number: (eg. 150)"
+  }
+]
