@@ -22,7 +22,7 @@ type Inputs = {
 const currencies = ['USD', 'GBP', 'EUR', 'AUD', 'COP'];
 
 const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  //const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [user, setUser] = useState<userObject | null>(null);
   const [loading, setLoading] = useState(false);
   const [botId, setBotId] = useState(0);
@@ -33,7 +33,6 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     reset
   } = useForm<Inputs>();
@@ -46,10 +45,9 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         scrollToBottom();
       })
       .catch(async (err) => {
-
         onLogout();
       });
-  }, [token]);
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -61,6 +59,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}
       }
     );
+
     return response?.data;
   }
 
@@ -162,10 +161,26 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     return conversionResponse;
   }
 
+  const formatHour = (stringDate: string) => {
+    const date = new Date(stringDate);
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const period = hours >= 12 ? 'p.m.': 'a.m.';
+
+    if (hours > 12) {
+      hours -= 12;
+    } else if (hours === 0) {
+      hours = 12;
+    }
+    const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+
+    return hours + ':' + formattedMinutes + ' ' + period;
+  }
+
   return (
     <div className="Home">
       <div className="header-bar">
-        <h3>Currency Chat</h3>
+        <h3>Currency Chatbot</h3>
         <button onClick={onLogout} className='btn-primary'>
           Logout
         </button>
@@ -181,6 +196,9 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
                 ? user.conversation.map ((message) => (
                   <div className={message?.role === 1 ? 'bot-chat': 'user-chat'} key={message.id}>
                     { validateNewLines(message.message) }
+                    <div className='hour'>
+                      { formatHour(message.createdAt) }
+                    </div>
                   </div>
                 ))
                 : <div className='no-chat'>

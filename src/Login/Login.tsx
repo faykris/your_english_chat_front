@@ -7,10 +7,9 @@ import Register from "../Register/Register";
 type Inputs = {
   email: string
   password: string
-}
+};
 
 const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
-  const [loading, setLoading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const {
     register,
@@ -20,7 +19,6 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      setLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_URL}/auth/login`,
         {
@@ -33,8 +31,6 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
       onLogin(accessToken);
     } catch (error) {
       console.error('Login failed:', error);
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -44,7 +40,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
 
   return (
     <div className='Login'>
-      <h1>Currency Chat</h1>
+      <h1>Currency Chatbot</h1>
       <div className='login-card'>
         <div className='login-title'>
           <h3>
@@ -60,7 +56,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
                 <input type='password' placeholder='Password' {...register("password", { required: true })} />
                 {errors.password ? <span>This field is required</span> : <span>&nbsp;</span>}
                 <div className='login-submit'>
-                  <p>Create an account <a onClick={switchRegister}>here</a> </p>
+                  <p>Create an account <span onClick={switchRegister}>here</span> </p>
                   <button className='btn-primary' type="submit">Continue</button>
                 </div>
               </form> :

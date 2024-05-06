@@ -12,11 +12,9 @@ type Inputs = {
 
 const Register: React.FC<{ onRegister: () => void }> = ({ onRegister }) => {
   const [loading, setLoading] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -31,13 +29,12 @@ const Register: React.FC<{ onRegister: () => void }> = ({ onRegister }) => {
       if (registerResponse.status === 201) {
         onRegister();
       }
-
     } catch (error) {
       console.error('error:', error);
     }
   }
 
-  return (<div>
+  return <div>
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type='text' placeholder='Name' {...register("fullName", { required: true })} />
       {errors.fullName ? <span>This field is required</span> : <span>&nbsp;</span>}
@@ -48,11 +45,13 @@ const Register: React.FC<{ onRegister: () => void }> = ({ onRegister }) => {
       <input type='password' placeholder='Password' {...register("password", { required: true })} />
       {errors.password ? <span>This field is required</span> : <span>&nbsp;</span>}
       <div className='login-submit'>
-        <p>If you already have an account, login <a onClick={onRegister}>here</a> </p>
-        <button className='btn-primary' type="submit">Create</button>
+        <p>If you already have an account, login <span onClick={onRegister}>here</span> </p>
+        <button className='btn-primary' type="submit" disabled={loading}>
+          { loading ? '...' : 'Create' }
+        </button>
       </div>
     </form>
-  </div>)
+  </div>
 }
 
 export default Register;

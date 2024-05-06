@@ -72,7 +72,7 @@
     font-size: 12px;
 }
 
-.login-submit p a {
+.login-submit p span {
     color: blue;
     font-weight: 700;
     cursor: pointer;
