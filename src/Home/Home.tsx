@@ -113,7 +113,8 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
             botMessage = `An error occurred: ${response.data.error.info}`
           }
           setFirstValue(null);
-          setSecondValue(null)
+          setSecondValue(null);
+          setAmount(null);
           setBotId(0);
           break;
         case 4: // Invalid currency and return current botId
