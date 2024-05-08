@@ -47,7 +47,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
       .catch(async (err) => {
         onLogout();
       });
-  });
+  },[]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
