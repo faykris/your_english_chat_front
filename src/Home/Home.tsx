@@ -79,14 +79,14 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
       );
       setUser(userResponse?.data);
 
-      if ((botId === 1 || botId === 2) && !currencies.includes(data.message.trim())) {
+      if ((botId === 1 || botId === 2) && !currencies.includes(data.message.trim().toUpperCase())) {
         setErrorBotId(botId);
         setBotId(4);
-      } else if (!firstValue && currencies.includes(data.message.trim()) ) {
+      } else if (!firstValue && currencies.includes(data.message.trim().toUpperCase()) ) {
         setFirstValue(data.message.trim());
-      } else if (firstValue && !secondValue && currencies.includes(data.message.trim())) {
+      } else if (firstValue && !secondValue && currencies.includes(data.message.trim().toUpperCase())) {
         setSecondValue(data.message.trim());
-      } else if (firstValue && secondValue && !amount && currencies.includes(data.message.trim())) {
+      } else if (firstValue && secondValue && !amount && currencies.includes(data.message.trim().toUpperCase())) {
         setAmount(data.message.trim())
       }
 
