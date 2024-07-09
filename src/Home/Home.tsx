@@ -3,12 +3,25 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import './Home.css';
 import botMessages from '../botMessages.json'
+import ReactPlayer from 'react-player/youtube'
+import YouTube from 'react-youtube';
 
 type userObject = {
   _id: string,
-  fullName: string,
-  email: string,
+  fullname: string,
+  username: string,
   password: string,
+  isModerator: boolean,
+  createdAt: Date,
+  updatedAt: Date,
+  __v: number
+}
+
+type classroomObject = {
+  _id: string,
+  title: string,
+  description: string,
+  videoUrl: string,
   conversation: any[],
   createdAt: Date,
   updatedAt: Date,
@@ -24,6 +37,7 @@ const currencies = ['USD', 'GBP', 'EUR', 'AUD', 'COP'];
 const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   //const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const [user, setUser] = useState<userObject | null>(null);
+  const [classroom, setClassroom] = useState<classroomObject | null>(null);
   const [loading, setLoading] = useState(false);
   const [botId, setBotId] = useState(0);
   const [errorBotId, setErrorBotId] = useState(0);
@@ -42,11 +56,18 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     getUser()
       .then((res) => {
         setUser(res);
-        scrollToBottom();
+        console.log(user)
       })
       .catch(async (err) => {
         onLogout();
       });
+
+    getAllClassrooms()
+      .then((res) =>{
+        setClassroom(res[0]);
+        console.log(res)
+        scrollToBottom();
+      })
   },[]);
 
   const scrollToBottom = () => {
@@ -63,84 +84,39 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     return response?.data;
   }
 
+  const getAllClassrooms = async () => {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACK_URL}/classroom`,
+      {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}
+      }
+    );
+
+    return response?.data;
+  }
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       setLoading(true);
-      const userResponse = await axios.post(
-        `${process.env.REACT_APP_BACK_URL}/user/addMessage`,
+      const classroomResponse = await axios.post(
+        `${process.env.REACT_APP_BACK_URL}/user/add_message`,
         {
-          userId: user?._id,
+          classroomId: classroom?._id,
+          username: user?.username,
+          isModerator: user?.isModerator || false,
           message: data.message.trim(),
-          role: 2
         },
         {
           headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}
         }
       );
-      setUser(userResponse?.data);
-
-      if ((botId === 1 || botId === 2) && !currencies.includes(data.message.trim().toUpperCase())) {
-        setErrorBotId(botId);
-        setBotId(4);
-      } else if (!firstValue && currencies.includes(data.message.trim().toUpperCase()) ) {
-        setFirstValue(data.message.trim());
-      } else if (firstValue && !secondValue && currencies.includes(data.message.trim().toUpperCase())) {
-        setSecondValue(data.message.trim());
-      } else if (firstValue && secondValue && !amount && currencies.includes(data.message.trim().toUpperCase())) {
-        setAmount(data.message.trim())
-      }
-
-      let botMessage = '';
-      switch (botId) {
-        case 0: // Welcome message and insert first value
-          botMessage = botMessages.filter(b => b.id === 1)[0].message;
-          setBotId(1);
-          break;
-        case 1: // Second value inserted
-          botMessage = botMessages.filter(b => b.id === 2)[0].message;
-          setBotId(2);
-          break;
-        case 2: // Amount value inserted
-          botMessage = botMessages.filter(b => b.id === 3)[0].message;
-          setBotId(3);
-          break;
-        case 3: // Response with conversion and return to welcome
-          botMessage = botMessages.filter(b => b.id === 4)[0].message;
-          const response = await getCurrencyConversion(firstValue, secondValue, data.message.trim());
-          if (response.data.success) {
-            botMessage += `\n - ${firstValue} to ${secondValue} = ${response.data.result}`
-          } else {
-            botMessage = `An error occurred: ${response.data.error.info}`
-          }
-          setFirstValue(null);
-          setSecondValue(null);
-          setAmount(null);
-          setBotId(0);
-          break;
-        case 4: // Invalid currency and return current botId
-          botMessage = botMessages.filter(b => b.id === 5)[0].message;
-          setBotId(errorBotId);
-          break;
-      }
-
+      setClassroom(classroomResponse?.data);
       reset();
-      const botResponse = await axios.post(
-        `${process.env.REACT_APP_BACK_URL}/user/addMessage`,
-        {
-          userId: user?._id,
-          message: botMessage,
-          role: 1
-        },
-        {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}
-        }
-      );
-      setUser(botResponse.data);
       scrollToBottom();
     } catch (error) {
       console.error('error:', error)
     } finally {
-      await getUser();
+      await getAllClassrooms();
       scrollToBottom();
       setLoading(false);
     }
@@ -154,13 +130,13 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
     return <div>{newLineElements}</div>;
   }
 
-  const getCurrencyConversion = async (fromCurrency: string | null, toCurrency:string | null, amount:string | null) => {
-    const conversionResponse = await axios.get(
-      `${process.env.REACT_APP_API_URL}?access_key=${process.env.REACT_APP_API_KEY}&from=${fromCurrency}&to=${toCurrency}&amount=${amount}`,
-      {}
-    );
-    return conversionResponse;
-  }
+  // const getCurrencyConversion = async (fromCurrency: string | null, toCurrency:string | null, amount:string | null) => {
+  //   const conversionResponse = await axios.get(
+  //     `${process.env.REACT_APP_API_URL}?access_key=${process.env.REACT_APP_API_KEY}&from=${fromCurrency}&to=${toCurrency}&amount=${amount}`,
+  //     {}
+  //   );
+  //   return conversionResponse;
+  // }
 
   const formatHour = (stringDate: string) => {
     const date = new Date(stringDate);
@@ -181,21 +157,25 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   return (
     <div className="Home">
       <div className="header-bar">
-        <h3>Currency Chatbot</h3>
+        <h3>Your English</h3>
         <button onClick={onLogout} className='btn-primary'>
           Logout
         </button>
       </div>
       <div className="chat-body">
+        <div className="chat-video">
+          <ReactPlayer url={classroom?.videoUrl} controls={true} width='100%' height='100%' />
+        </div>
         <div className="chat-card">
           <div className="chat-title">
-            <p>{user?.fullName}</p>
+            <p>{user?.fullname}</p>
           </div>
           <div className="chat-conversation">
             {
-              user && user.conversation.length > 0
-                ? user.conversation.map ((message) => (
-                  <div className={message?.role === 1 ? 'bot-chat': 'user-chat'} key={message.id}>
+              classroom && classroom.conversation.length > 0
+                ? classroom.conversation.map ((message) => (
+                  <div className={message?.username !== user?.username ? 'bot-chat': 'user-chat'} key={message.id}>
+                    <p className='username'>{message.username} { message?.isModerator ? <span className='moderator'>Moderator</span> : '' }</p>
                     { validateNewLines(message.message) }
                     <div className='hour'>
                       { formatHour(message.createdAt) }
@@ -211,7 +191,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           <div className="chat-input">
             <form onSubmit={handleSubmit(onSubmit)}>
               <input type='text'
-                     placeholder="Write your message here..."
+                     placeholder="Type your message here..."
                      {...register("message", { required: true })}
                 className={errors.message ? 'error-input send-input': 'send-input'}
               />
@@ -223,6 +203,12 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
               </button>
             </form>
           </div>
+        </div>
+
+        <div className="class-info">
+          <h1>{classroom?.title}</h1>
+          <hr />
+          <p>{classroom?.description}</p>
         </div>
       </div>
     </div>

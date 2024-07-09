@@ -5,7 +5,7 @@ import './Login.css';
 import Register from "../Register/Register";
 
 type Inputs = {
-  email: string
+  username: string
   password: string
 };
 
@@ -22,7 +22,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_URL}/auth/login`,
         {
-          email: data.email,
+          username: data.username,
           password: data.password
         }
       );
@@ -40,7 +40,8 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
 
   return (
     <div className='Login'>
-      <h1>Currency Chatbot</h1>
+      <img className='img-bg' alt='img-bg' src="https://img.freepik.com/free-vector/flat-waving-american-flag-background_23-2149396774.jpg" />
+      <h1>Your English Class</h1>
       <div className='login-card'>
         <div className='login-title'>
           <h3>
@@ -51,8 +52,8 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
           {
             !isRegister ?
               <form onSubmit={handleSubmit(onSubmit)}>
-                <input type='text' placeholder='Email' {...register("email", { required: true })} />
-                {errors.email ? <span>This field is required</span> : <span>&nbsp;</span>}
+                <input type='text' placeholder='Username' {...register("username", { required: true })} />
+                {errors.username ? <span>This field is required</span> : <span>&nbsp;</span>}
                 <input type='password' placeholder='Password' {...register("password", { required: true })} />
                 {errors.password ? <span>This field is required</span> : <span>&nbsp;</span>}
                 <div className='login-submit'>
@@ -64,7 +65,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
           }
         </div>
       </div>
-      <h3>Make your conversions easily!</h3>
+      <h3>Access and learn easily!</h3>
       <h5>Created by <a href='https://github.com/faykris'>Cristian Pinzón</a></h5>
     </div>
   );

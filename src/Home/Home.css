@@ -1,8 +1,7 @@
 .Home {
     width: 100%;
-    min-height: 50rem;
-    background-color: #88bb99;
-    background-image: url("https://cdn1.vectorstock.com/i/1000x1000/23/60/currency-background-vector-5262360.jpg");
+    min-height: 60rem;
+    background-color: #b4bdcb;
     background-size: cover;
     background-repeat: no-repeat;
 }
@@ -10,17 +9,18 @@
 .header-bar {
     position: fixed;
     width: 100%;
-    background-color: #33bc77;
+    background-color: #333ebc;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: .5rem 3vw;
     box-shadow: 1px 1px 8px 5px rgba(0, 0, 0, 0.3);
+    z-index: 5;
 }
 
 .header-bar h3 {
     color: white;
-    font-family: Verdana;
+    font-family: Verdana, sans-serif;
 }
 
 .chat-body {
@@ -30,6 +30,34 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.chat-body .chat-video {
+    margin-top: 2rem;
+    width: 60%;
+    height: 93%;
+    background-color: #05174b;
+    border: 3px solid #112678;
+    box-shadow: 1px 1px 8px 5px rgba(0, 0, 0, 0.3);
+}
+
+.chat-body .class-info {
+    padding: 1rem;
+    box-shadow: 1px 1px 8px 5px rgba(0, 0, 0, 0.3);
+    width: 90.5%;
+    background-color: white;
+    font-family: Verdana, sans-serif;
+    border: 3px solid #112678;
+}
+.class-info h1 {
+    color: #112678;
+}
+
+.class-info hr {
+    margin: 1vw 0;
+    border: 2px solid #d2346b;
 }
 
 .chat-body .chat-card {
@@ -39,18 +67,16 @@
     flex-direction: column;
     justify-content: space-between;
     height: calc(50rem - 10rem);
-    width: 60vw;
+    width: 30%;
     max-width: 50rem;
-    border: 3px solid #117877;
-    border-radius: 1rem;
-    background-image: url("https://media.istockphoto.com/id/1368169112/vector/money-green-seamless-pattern-vector-background-included-line-icons-as-piggy-bank-wallet.jpg?s=612x612&w=0&k=20&c=qjIUpnUPtiKGBgLnXGLQ_4qQUq36OvP82DIFTAdch70=");
+    border: 3px solid #112678;
+    background-color: #c8d7ef;
 }
 
 .chat-title {
     height: 2.5rem;
-    background-color: #117877;
+    background-color: #112678;
     width: 100%;
-    border-radius: .6rem .6rem 0 0;
     display: flex;
     align-items: center;
     color: white;
@@ -69,8 +95,7 @@
 .chat-input {
     height: 3rem;
     width: 100%;
-    background-color: #117877;
-    border-radius: 0 0 .7rem .7rem;
+    background-color: #112678;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -86,7 +111,7 @@
 }
 
 .chat-input form input::placeholder {
-    color: #88b5bb;
+    color: #889abb;
 }
 
 .user-chat, .bot-chat, .no-chat {
@@ -98,18 +123,30 @@
     color: #114422;
     position: relative;
     min-width: 4.5rem;
+    font-size: 13px;
+    background-color: #7ac7f1;
+    box-shadow: 1px 2px 6px #012841;
 }
 
 .user-chat {
-    background-color: #34d2d0;
-    box-shadow: 1px 2px 6px #014140;
-    align-self: flex-start;
+    align-self: flex-end;
 }
 
 .bot-chat {
-    background-color: #34d241;
-    box-shadow: 1px 2px 6px #114422;
-    align-self: flex-end;
+    align-self: flex-start;
+}
+
+.username  {
+    font-weight: 600;
+    font-size: 14px;
+    color: #0436c5;
+}
+
+.username span {
+    font-weight: 300;
+    font-size: 12px;
+    color: #c50437;
+    margin-left: .5rem;
 }
 
 .no-chat {
