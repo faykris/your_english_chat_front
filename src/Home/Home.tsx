@@ -2,9 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import './Home.css';
-import botMessages from '../botMessages.json'
 import ReactPlayer from 'react-player/youtube'
-import YouTube from 'react-youtube';
+import { io, Socket } from 'socket.io-client';
 
 type userObject = {
   _id: string,
@@ -32,18 +31,12 @@ type Inputs = {
   message: string
 }
 
-const currencies = ['USD', 'GBP', 'EUR', 'AUD', 'COP'];
 
 const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
-  //const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [user, setUser] = useState<userObject | null>(null);
   const [classroom, setClassroom] = useState<classroomObject | null>(null);
   const [loading, setLoading] = useState(false);
-  const [botId, setBotId] = useState(0);
-  const [errorBotId, setErrorBotId] = useState(0);
-  const [firstValue, setFirstValue] = useState<string | null>(null);
-  const [secondValue, setSecondValue] = useState<string | null>(null);
-  const [amount, setAmount] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -53,19 +46,33 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const newSocket = io(process.env.REACT_APP_BACK_URL as string)
+    setSocket(newSocket)
+
+    newSocket.on('receiveMessage', (message: any) => {
+      console.log('message', message)
+      setClassroom(message);
+      scrollToBottom();
+    });
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
+
+  useEffect(() => {
     getUser()
       .then((res) => {
         setUser(res);
-        console.log(user)
       })
       .catch(async (err) => {
+        console.error(err);
         onLogout();
       });
 
     getAllClassrooms()
       .then((res) =>{
         setClassroom(res[0]);
-        console.log(res)
         scrollToBottom();
       })
   },[]);
@@ -111,6 +118,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         }
       );
       setClassroom(classroomResponse?.data);
+      socket?.emit('sendMessage', classroomResponse.data);
       reset();
       scrollToBottom();
     } catch (error) {
@@ -121,22 +129,6 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
       setLoading(false);
     }
   }
-
-  const validateNewLines = (text: string) => {
-    const lines = text.split('\n');
-    const newLineElements = lines.map((line, index) => (
-      <p key={index}>{line}</p>
-    ));
-    return <div>{newLineElements}</div>;
-  }
-
-  // const getCurrencyConversion = async (fromCurrency: string | null, toCurrency:string | null, amount:string | null) => {
-  //   const conversionResponse = await axios.get(
-  //     `${process.env.REACT_APP_API_URL}?access_key=${process.env.REACT_APP_API_KEY}&from=${fromCurrency}&to=${toCurrency}&amount=${amount}`,
-  //     {}
-  //   );
-  //   return conversionResponse;
-  // }
 
   const formatHour = (stringDate: string) => {
     const date = new Date(stringDate);
@@ -175,8 +167,8 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
               classroom && classroom.conversation.length > 0
                 ? classroom.conversation.map ((message) => (
                   <div className={message?.username !== user?.username ? 'bot-chat': 'user-chat'} key={message.id}>
-                    <p className='username'>{message.username} { message?.isModerator ? <span className='moderator'>Moderator</span> : '' }</p>
-                    { validateNewLines(message.message) }
+                    <p key={message.id} className='username'>{message.username} { message?.isModerator ? <span className='moderator'>Moderator</span> : '' }</p>
+                    { message.message }
                     <div className='hour'>
                       { formatHour(message.createdAt) }
                     </div>

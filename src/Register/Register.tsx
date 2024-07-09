@@ -5,8 +5,8 @@ import './Register.css';
 
 type Inputs = {
   fullName: string
-  age: number
-  email: string
+  username: string
+  isModerator: boolean
   password: string
 }
 
@@ -38,10 +38,8 @@ const Register: React.FC<{ onRegister: () => void }> = ({ onRegister }) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input type='text' placeholder='Name' {...register("fullName", { required: true })} />
       {errors.fullName ? <span>This field is required</span> : <span>&nbsp;</span>}
-      <input type='number' placeholder='Age' {...register("age", { required: true })} />
-      {errors.age ? <span>This field is required</span> : <span>&nbsp;</span>}
-      <input type='text' placeholder='Email' {...register("email", { required: true })} />
-      {errors.email ? <span>This field is required</span> : <span>&nbsp;</span>}
+      <input type='text' placeholder='Username' {...register("username", { required: true })} />
+      {errors.username ? <span>This field is required</span> : <span>&nbsp;</span>}
       <input type='password' placeholder='Password' {...register("password", { required: true })} />
       {errors.password ? <span>This field is required</span> : <span>&nbsp;</span>}
       <div className='login-submit'>
