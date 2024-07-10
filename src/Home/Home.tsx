@@ -155,9 +155,11 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
         </button>
       </div>
       <div className="chat-body">
+      
         <div className="chat-video">
           <ReactPlayer url={classroom?.videoUrl} controls={true} width='100%' height='100%' />
         </div>
+
         <div className="chat-card">
           <div className="chat-title">
             <p>{user?.fullname}</p>

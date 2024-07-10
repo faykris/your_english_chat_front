@@ -1,13 +1,11 @@
 .Home {
     width: 100%;
     min-height: 60rem;
-    background-color: #b4bdcb;
     background-size: cover;
     background-repeat: no-repeat;
 }
 
 .header-bar {
-    position: fixed;
     width: 100%;
     background-color: #333ebc;
     display: flex;
@@ -195,32 +193,70 @@
     color: white;
 }
 
-@media screen and (max-width: 980px) {
+@media (max-width: 980px) {
+    .Home {
+        min-height: 80vw;
+    }
+
     .chat-body {
+        min-height: 60vw;
         padding: 1rem;
+        flex-wrap: wrap;
     }
 
-    .chat-body .chat-card {
-        width: 80vw;
+    .chat-body .chat-card,
+    .chat-body .chat-video,
+    .chat-body .class-info {
+        margin: 0;
+        width: 100%;
+        height: 45vw;
     }
 
-    .user-chat, .bot-chat, .no-chat {
-        max-width: 65%;
+    .chat-video {
+        width: 100%;
+        height: 54vw;
     }
+
+    .class-card {
+        height: 20vw;
+    }
+
+    .class-info {
+        width: 100%;
+        height: 20vw;
+    }
+
 }
 
-@media screen and (max-width: 480px) {
+@media (max-width: 580px) {
+    .Home {
+        min-height: 90vw;
+    }
+
     .chat-body {
         padding: .5rem;
     }
 
-    .chat-body .chat-card {
+    .chat-body {
         margin-top: 0;
         width: 100%;
-        height: 35rem;
+        height: 25rem;
     }
 
-    .user-chat, .bot-chat, .no-chat {
-        max-width: 75%;
+    .chat-body .chat-video {
+        width: 100%;
+        height: 50vw;
     }
+
+    .chat-body .chat-card {
+        width: 100%;
+        height: 100vw;
+    }
+
+    .chat-body .class-info {
+        font-size: 70%;
+        width: 100%;
+        height: 44vw;
+    }
+
 }
