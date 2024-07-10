@@ -87,6 +87,11 @@
     cursor: pointer;
 }
 
+.error {
+    color: #d2347b;
+    font-size: 12px;
+}
+
 @media screen and (max-width: 1080px) {
     .Login {
         padding: 6vw;

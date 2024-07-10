@@ -11,3 +11,7 @@
     margin-left: 10px;
     width: 10px;
 }
+
+.error {
+    color: rgb(190, 4, 57);
+}

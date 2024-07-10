@@ -11,6 +11,7 @@ type Inputs = {
 
 const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
   const [isRegister, setIsRegister] = useState(false);
+  const [error, setError] = useState('');
   const {
     register,
     handleSubmit,
@@ -28,8 +29,10 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
       );
       const accessToken = response.data.accessToken;
       localStorage.setItem('token', accessToken);
+      setError('')
       onLogin(accessToken);
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.response.data.message)
       console.error('Login failed:', error);
     }
   }
@@ -56,6 +59,7 @@ const Login: React.FC<{ onLogin: (token: string) => void }> = ({ onLogin }) => {
                 {errors.username ? <span>This field is required</span> : <span>&nbsp;</span>}
                 <input type='password' placeholder='Password' {...register("password", { required: true })} />
                 {errors.password ? <span>This field is required</span> : <span>&nbsp;</span>}
+                {error && <p className="error">{error}</p>}
                 <div className='login-submit'>
                   <p>Create an account <span onClick={switchRegister}>here</span> </p>
                   <button className='btn-primary' type="submit">Continue</button>
