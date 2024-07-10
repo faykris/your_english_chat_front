@@ -4,7 +4,7 @@ import axios from "axios";
 import './Register.css';
 
 type Inputs = {
-  fullName: string
+  fullname: string
   username: string
   isModerator: boolean
   password: string
@@ -36,12 +36,16 @@ const Register: React.FC<{ onRegister: () => void }> = ({ onRegister }) => {
 
   return <div>
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input type='text' placeholder='Name' {...register("fullName", { required: true })} />
-      {errors.fullName ? <span>This field is required</span> : <span>&nbsp;</span>}
+      <input type='text' placeholder='Name' {...register("fullname", { required: true })} />
+      {errors.fullname ? <span>This field is required</span> : <span>&nbsp;</span>}
       <input type='text' placeholder='Username' {...register("username", { required: true })} />
       {errors.username ? <span>This field is required</span> : <span>&nbsp;</span>}
       <input type='password' placeholder='Password' {...register("password", { required: true })} />
       {errors.password ? <span>This field is required</span> : <span>&nbsp;</span>}
+      <div className="moderator">
+        <label htmlFor="isModerator">Are you moderator?</label>
+        <input type='checkbox' id="isModerator" {...register("isModerator", )} />
+      </div>
       <div className='login-submit'>
         <p>If you already have an account, login <span onClick={onRegister}>here</span> </p>
         <button className='btn-primary' type="submit" disabled={loading}>

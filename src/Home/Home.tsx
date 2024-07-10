@@ -46,7 +46,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const newSocket = io(process.env.REACT_APP_BACK_URL as string)
+    const newSocket = io(process.env.REACT_APP_BACK_URL as string, { transports: ['websocket', 'polling']})
     setSocket(newSocket)
 
     newSocket.on('receiveMessage', (message: any) => {
@@ -167,7 +167,7 @@ const Home: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
               classroom && classroom.conversation.length > 0
                 ? classroom.conversation.map ((message) => (
                   <div className={message?.username !== user?.username ? 'bot-chat': 'user-chat'} key={message.id}>
-                    <p key={message.id} className='username'>{message.username} { message?.isModerator ? <span className='moderator'>Moderator</span> : '' }</p>
+                    <p key={message.id} className='username'>{message.username} { message?.isModerator ? <span>Moderator</span> : '' }</p>
                     { message.message }
                     <div className='hour'>
                       { formatHour(message.createdAt) }

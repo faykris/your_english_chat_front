@@ -1,0 +1,13 @@
+.moderator {
+    display: flex;
+    font-size: 13px;
+    align-items: center;
+    margin-bottom: 1rem;
+    color: #152bbd;
+    padding: 0 .5rem;
+}
+
+#isModerator {
+    margin-left: 10px;
+    width: 10px;
+}
